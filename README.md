@@ -4,6 +4,16 @@ A small React Native app for handing work from one field shift to the next. It i
 
 Shift Relay is fully runnable from a fresh clone: it needs no backend, accounts, or API keys, and all data is fictional. Web and iOS (Expo Go) are supported.
 
+#update 1.1
+
+-adding shared DB for persistent data
+
+-task assignment 
+
+-report builder and delivery automation
+
+
+
 ## What it shows
 
 | Area | How |
