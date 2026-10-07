@@ -6,6 +6,7 @@ import type { DevState } from '@/features/dev/devSlice';
 import { issueDraftError } from '@/features/issues/issueCategories';
 import { canManageIssues } from '@/features/issues/issuePermissions';
 import type { Issue, RaiseIssueInput, ResolveIssueInput } from '@/features/issues/types';
+import { sharedMode, sharedOperation } from '@/features/workspace/client';
 
 import {
   canDeleteWalkPhotos,
@@ -36,13 +37,20 @@ type MockQuery =
   | { operation: 'resolveIssue'; input: ResolveIssueInput };
 
 export interface LogsApiError {
-  status: 404 | 409 | 503;
+  status: number;
   data: { message: string };
 }
 
 export function isLogsApiError(error: unknown): error is LogsApiError {
   if (typeof error !== 'object' || error === null || !('status' in error)) return false;
-  return error.status === 404 || error.status === 409 || error.status === 503;
+  return (
+    typeof error.status === 'number' &&
+    'data' in error &&
+    typeof error.data === 'object' &&
+    error.data !== null &&
+    'message' in error.data &&
+    typeof error.data.message === 'string'
+  );
 }
 
 /** The API's own message for a failed call, or `fallback` for anything else (say, a crash). */
@@ -293,7 +301,10 @@ const mockBaseQuery: BaseQueryFn<MockQuery, unknown, LogsApiError> = async (quer
 
 export const logsApi = createApi({
   reducerPath: 'logsApi',
-  baseQuery: mockBaseQuery,
+  baseQuery: ((query, api, options) =>
+    sharedMode
+      ? sharedOperation(query, api.getState())
+      : mockBaseQuery(query, api, options)) as BaseQueryFn<MockQuery, unknown, LogsApiError>,
   tagTypes: ['Log', 'Issue'],
   endpoints: (build) => ({
     getShiftLogs: build.query<readonly ShiftLog[], void>({

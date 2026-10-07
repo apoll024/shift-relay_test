@@ -1,5 +1,8 @@
 # Product
 
+> This document describes the original demo unless stated otherwise. Optional shared operations (durable storage, tasks, report builder, and scheduled SMTP delivery) are described in [shared setup](shared-setup.md), [the feature spec](specs/shared-operations.md), and [ADR 0010](decisions/0010-shared-python-service.md).
+
+
 Shift Relay is a three-phase operational log for field teams that review, hand off, and close work every day. Field teams need a durable way to pass unfinished or completed work between shifts, and the app turns that into a focused mobile flow. It is also a compact demonstration of TypeScript, Redux, error handling, design-system engineering, and an evidence-based AI development workflow. Data and accounts are fictional.
 
 ## Goals

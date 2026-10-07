@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 // Web E2E (ADR 0007). Starts the Expo web dev server unless one is already running.
 export default defineConfig({
   testDir: './e2e',
+  testIgnore: 'shared-operations.spec.ts',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
@@ -10,15 +11,19 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:8181',
     trace: 'retain-on-failure',
+    ...(process.env.PLAYWRIGHT_EXECUTABLE_PATH
+      ? { launchOptions: { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH } }
+      : {}),
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
     { name: 'phone', use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' } },
   ],
   webServer: {
-    command: 'npx expo start --web --port 8181',
+    command: 'npx expo start --web --host localhost --port 8181',
     url: 'http://localhost:8181',
     reuseExistingServer: true,
     timeout: 180_000,
+    env: { EXPO_PUBLIC_API_URL: '', EXPO_UNSTABLE_BONJOUR: '0' },
   },
 });

@@ -2,6 +2,8 @@ import type Ionicons from '@expo/vector-icons/Ionicons';
 import type { ComponentProps } from 'react';
 
 import type { ShiftPhase } from './types';
+import { sharedMode } from '@/features/workspace/client';
+import { operationalDateKey } from '@/features/workspace/operationalClock';
 
 export const phaseOrder = ['morning', 'midday', 'night'] as const satisfies readonly ShiftPhase[];
 
@@ -40,7 +42,7 @@ export function localDateKey(date: Date): string {
 
 /** Today's operational date, in the device's timezone. */
 export function todayKey(): string {
-  return localDateKey(new Date());
+  return (sharedMode ? operationalDateKey() : null) ?? localDateKey(new Date());
 }
 
 export function logId(date: string, phase: ShiftPhase): string {

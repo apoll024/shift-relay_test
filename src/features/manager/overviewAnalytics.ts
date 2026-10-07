@@ -1,4 +1,3 @@
-import { demoAccounts } from '@/features/auth/demoAccounts';
 import { localDateKey, phaseOrder } from '@/features/logs/logTemplates';
 import type { Issue } from '@/features/issues/types';
 import type { ShiftLog } from '@/features/logs/types';
@@ -41,12 +40,8 @@ function daysBefore(today: Date, days: number): string {
 function isLogComplete(log: ShiftLog): boolean {
   if (log.status !== 'signedOff') return false;
   if (log.phase !== 'midday') return log.signOffs.length === 1;
-  const [sent, received] = log.signOffs;
-  return (
-    log.signOffs.length === 2 &&
-    sent?.actor === demoAccounts.jordan.name &&
-    received?.actor === demoAccounts.avery.name
-  );
+  // Both APIs enforce sender/receiver roles; names can be customized in shared mode.
+  return log.signOffs.length === 2;
 }
 
 export function percent(part: number, whole: number): number {

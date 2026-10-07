@@ -1,0 +1,8 @@
+node_modules
+.git
+.env*
+server/data
+**/__pycache__
+*.sqlite3*
+test-results
+playwright-report

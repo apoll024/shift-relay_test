@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { Button, makeStyles, Text } from '@/design-system';
 import { demoAccounts } from '@/features/auth/demoAccounts';
-import { selectDemoAccountId, signOut } from '@/features/auth/sessionSlice';
+import { selectDemoAccountId, selectSharedUser, signOut } from '@/features/auth/sessionSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 /** Who is signed in, shown once under the app name in the nav instead of on every screen. */
@@ -11,13 +11,14 @@ export function SessionSummary({ testIDPrefix = 'shell' }: { testIDPrefix?: stri
   const styles = useStyles();
   const dispatch = useAppDispatch();
   const accountId = useAppSelector(selectDemoAccountId);
+  const sharedUser = useAppSelector(selectSharedUser);
   const account = accountId ? demoAccounts[accountId] : null;
 
   return (
     <View style={styles.root} testID={`${testIDPrefix}-session`}>
       <View style={styles.copy}>
         <Text variant="bodySm" weight="semibold" numberOfLines={1}>
-          {account ? account.name : 'Not signed in'}
+          {sharedUser?.name ?? (account ? account.name : 'Not signed in')}
         </Text>
         <Text variant="caption" tone="muted" numberOfLines={1}>
           {account ? account.title : 'Choose a demo user'}

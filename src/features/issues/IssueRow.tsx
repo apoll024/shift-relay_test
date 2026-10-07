@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
+import { router } from 'expo-router';
 import { Image, useWindowDimensions, View } from 'react-native';
 
 import { Badge, Button, Card, makeStyles, Text, useTheme } from '@/design-system';
@@ -11,6 +12,8 @@ import type { ShiftLog } from '@/features/logs/types';
 
 import { formatDateTime, formatDayFull } from '@/features/common/formatDate';
 import { plural } from '@/features/common/plural';
+import { sharedMode, workspaceError } from '@/features/workspace/client';
+import { useCreateTaskMutation } from '@/features/workspace/workspaceApi';
 
 import { issueCategories, issueTitle } from './issueCategories';
 import type { Issue } from './types';
@@ -81,6 +84,8 @@ export function IssueRow({
   const [resolving, setResolving] = useState(false);
   const [resolutionPhotos, setResolutionPhotos] = useState<PickedPhoto[]>([]);
   const [resolveError, setResolveError] = useState<string | null>(null);
+  const [createTask, taskState] = useCreateTaskMutation();
+  const [taskError, setTaskError] = useState<string | null>(null);
   const picker = usePhotoPicker((picked) =>
     setResolutionPhotos((current) => [...current, ...picked].slice(0, 5)),
   );
@@ -139,6 +144,36 @@ export function IssueRow({
           </View>
         ))}
       </View>
+
+      {sharedMode ? (
+        <Button
+          variant="outline"
+          size="sm"
+          loading={taskState.isLoading}
+          accessibilityLabel={`Create task for ${title}`}
+          onPress={() => {
+            setTaskError(null);
+            void createTask({
+              title,
+              description: issue.details,
+              sourceIssueId: issue.id,
+              assigneeId: null,
+              dueDate: null,
+              priority: 'high',
+            })
+              .unwrap()
+              .then(() => router.navigate('/tasks'))
+              .catch((failure: unknown) => setTaskError(workspaceError(failure)));
+          }}
+        >
+          Create or open task
+        </Button>
+      ) : null}
+      {taskError ? (
+        <View accessibilityLiveRegion="polite">
+          <Text tone="error">{taskError}</Text>
+        </View>
+      ) : null}
 
       {issue.photos.length > 0 ? (
         <View style={styles.photos} accessibilityLabel={`${issue.photos.length} issue photos`}>

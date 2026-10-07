@@ -64,7 +64,7 @@ All text goes through `Text`. No bare RN `<Text>` in features.
 
 ## App shell
 
-Six sections: Dashboard, Logs, Issues, Shift Photos, Design system, and Sign in ([ADR 0008](docs/decisions/0008-responsive-app-shell.md), amended 2026-09-29). Design system and Sign in live only in the side nav and the phone drawer. The phone bottom tabs are Logs, Shift Photos, a center camera button, Issues, and Dashboard.
+Eight sections: Dashboard, Logs, Issues, Shift Photos, Tasks, Reports, Design system, and Sign in ([ADR 0008](docs/decisions/0008-responsive-app-shell.md), amended 2026-09-29). Tasks, Reports, Design system, and Sign in live only in the side nav and the phone drawer. The phone bottom tabs are Logs, Shift Photos, a center camera button, Issues, and Dashboard.
 
 ```
 Wide (≥ breakpoint.wide, 768)                 Narrow (phones)

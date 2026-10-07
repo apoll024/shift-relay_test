@@ -2,7 +2,7 @@
 
 A small React Native app for handing work from one field shift to the next. It is built with TypeScript, Redux Toolkit, RTK Query, and its own design system.
 
-Shift Relay is fully runnable from a fresh clone: it needs no backend, accounts, or API keys, and all data is fictional. Web and iOS (Expo Go) are supported.
+The default fictional demo runs without a backend or API keys. Optional shared mode adds a Python service with durable SQLite storage, private account tokens, assigned tasks, report building, and daily email schedules. Web and iOS (Expo Go) are supported. See [shared setup](docs/shared-setup.md).
 
 #update 1.1
 
@@ -57,7 +57,16 @@ A suggested path through the app:
 
 ## Data and photos
 
-There is no backend. A mock RTK Query API serves generated, fictional data from memory, so every device has its own copy and a restart restores the seed. Shift photos are held the same way: the image stays on the device, and the log stores its local URI. Historical shift photos are fictional drawings generated in this repo; no real place is shown.
+In demo mode, a mock RTK Query API serves generated, fictional data from memory, so every device has its own copy and a restart restores the seed. Shift photos are held the same way: the image stays on the device, and the log stores its local URI. Historical shift photos are fictional drawings generated in this repo; no real place is shown.
+
+## Shared operations
+
+- **Shared database:** shifts, issues, photos, tasks, reports, schedules, and delivery history persist across devices and restarts.
+- **Tasks:** assign work, set priority/due dates, track status, and record completion notes. Link a shift issue to a task.
+- **Report builder:** preview and save outstanding work and overnight changes; download HTML or CSV on web.
+- **Automated delivery:** configure one daily schedule with recipients, local time, and timezone; server SMTP sends the report and records delivery status.
+
+Setup and limitations: [docs/shared-setup.md](docs/shared-setup.md). No report import is included.
 
 ## Docs
 

@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 
 import { hasCamera } from './captureSupport';
 import type { PhotoSource, PickedPhoto } from './types';
+import { sharedMode } from '@/features/workspace/client';
 
 export interface PickerError {
   message: string;
@@ -11,7 +12,11 @@ export interface PickerError {
   openSettings: boolean;
 }
 
-const pickerOptions: ImagePicker.ImagePickerOptions = { mediaTypes: ['images'], quality: 0.7 };
+const pickerOptions: ImagePicker.ImagePickerOptions = {
+  mediaTypes: ['images'],
+  quality: 0.7,
+  base64: sharedMode,
+};
 
 /**
  * Take a photo with the camera or pick some from the library. `onPicked` gets each photo with
@@ -27,7 +32,16 @@ export function usePhotoPicker(onPicked: (photos: PickedPhoto[]) => void) {
   const canUseCamera = hasCamera();
 
   const handle = (result: ImagePicker.ImagePickerResult, source: PhotoSource) => {
-    if (!result.canceled) onPicked(result.assets.map((asset) => ({ uri: asset.uri, source })));
+    if (!result.canceled)
+      onPicked(
+        result.assets.map((asset) => ({
+          uri:
+            sharedMode && asset.base64
+              ? `data:${Platform.OS === 'web' ? (asset.mimeType ?? 'image/jpeg') : 'image/jpeg'};base64,${asset.base64}`
+              : asset.uri,
+          source,
+        })),
+      );
   };
 
   const takePhoto = async () => {

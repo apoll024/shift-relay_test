@@ -3,7 +3,8 @@ import type { IconName } from '@/design-system';
 export interface NavItem {
   /** Tab route name; also the testID suffix (`nav-{name}`). */
   name: string;
-  href: '/' | '/logs' | '/issues' | '/photos' | '/design-system' | '/sign-in';
+  href:
+    '/' | '/logs' | '/issues' | '/photos' | '/design-system' | '/sign-in' | '/tasks' | '/reports';
   label: string;
   icon: IconName;
   iconActive: IconName;
@@ -49,6 +50,22 @@ export const navItems: readonly NavItem[] = [
     label: 'Design system',
     icon: 'color-palette-outline',
     iconActive: 'color-palette',
+    sideOnly: true,
+  },
+  {
+    name: 'tasks',
+    href: '/tasks',
+    label: 'Tasks',
+    icon: 'checkbox-outline',
+    iconActive: 'checkbox',
+    sideOnly: true,
+  },
+  {
+    name: 'reports',
+    href: '/reports',
+    label: 'Reports',
+    icon: 'document-text-outline',
+    iconActive: 'document-text',
     sideOnly: true,
   },
 ];

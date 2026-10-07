@@ -52,7 +52,11 @@
     "start:tunnel": "expo start --tunnel",
     "tokens": "node scripts/build-tokens.mjs && node scripts/check-contrast.mjs",
     "tokens:self-test": "node scripts/check-contrast.mjs --self-test",
-    "seed-photos": "node scripts/build-seed-photos.mjs"
+    "seed-photos": "node scripts/build-seed-photos.mjs",
+    "server": "python -m server.app",
+    "server:init": "python -m server.app --init-users",
+    "test:server": "python -m unittest server.test_service -v",
+    "e2e:shared": "playwright test --config playwright.shared.config.ts"
   },
   "private": true,
   "engines": {

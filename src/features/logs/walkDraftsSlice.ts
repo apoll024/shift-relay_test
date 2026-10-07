@@ -23,6 +23,9 @@ export const walkDraftsSlice = createSlice({
   name: 'walkDrafts',
   initialState,
   reducers: {
+    clearAllDrafts() {
+      return {};
+    },
     addWalkDrafts: {
       reducer(state, action: PayloadAction<{ logId: string; drafts: WalkDraft[] }>) {
         const { logId, drafts } = action.payload;

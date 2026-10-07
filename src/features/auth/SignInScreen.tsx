@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { demoAccounts } from './demoAccounts';
 import { selectDemoAccountId, signIn } from './sessionSlice';
 import type { DemoAccountId } from './types';
+import { sharedMode } from '@/features/workspace/client';
+import { SharedSignIn } from '@/features/workspace/SharedSignIn';
 
 const accountOrder: readonly DemoAccountId[] = ['jordan', 'avery', 'elena'];
 
@@ -33,6 +35,17 @@ export function SignInScreen() {
   const dispatch = useAppDispatch();
   const accountId = useAppSelector(selectDemoAccountId);
   const wide = width >= theme.breakpoint.wide;
+
+  if (sharedMode)
+    return (
+      <ScrollView
+        style={styles.screen}
+        contentContainerStyle={styles.content}
+        testID="screen-sign-in"
+      >
+        <SharedSignIn />
+      </ScrollView>
+    );
 
   return (
     <ScrollView
